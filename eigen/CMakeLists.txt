@@ -9,14 +9,20 @@ set(EXTERN_DIR
     ${CMAKE_SOURCE_DIR}/extern
 )
 
-set(OpenMP_CXX_FLAGS "/openmp")
-
 project(${PROJECT_NAME})
+
+# OpenMP
+FIND_PACKAGE(OpenMP)
+if(OPENMP_FOUND)
+    message("OPENMP FOUND")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+endif()
 
 find_package(Eigen3 CONFIG REQUIRED)
 
 add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/matrix_multiply.cpp)
-
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC 
